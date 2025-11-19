@@ -1,0 +1,31 @@
+@page "/todos"
+@inject HttpClient Http
+
+
+<h3>Todos</h3>
+
+
+@if (items is null)
+{
+<p><em>Carregando...</em></p>
+}
+else
+{
+<MudList>
+@foreach (var it in items)
+{
+<MudListItem>@it.Title - @(it.Done ? "✔" : "—")</MudListItem>
+}
+</MudList>
+}
+
+
+@code {
+List<Shared.Models.TodoItem>? items;
+
+
+protected override async Task OnInitializedAsync()
+{
+items = await Http.GetFromJsonAsync<List<Shared.Models.TodoItem>>("api/todo");
+}
+}
